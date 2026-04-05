@@ -26,6 +26,14 @@ It works alongside UFW — Fail2Ban does not replace the firewall, it uses it.
 - SSH hardened (Phase 1 complete)
 - UFW firewall enabled (Phase 2 complete)
 
+> **Note:** UFW is not required for Fail2Ban to work. Fail2Ban uses `iptables` by default, which is built into the Linux kernel and always available. UFW is just a frontend for iptables.
+
+| Situation | Fail2Ban works? |
+|-----------|----------------|
+| UFW installed | ✅ Yes |
+| No UFW, iptables only | ✅ Yes |
+| No firewall installed at all | ✅ Yes (iptables is always present) |
+
 ---
 
 ## Installation
@@ -109,9 +117,11 @@ bantime  = 600
 ### ⚠️ Common Misunderstanding
 
 ```
-❌ maxretry = 3  →  1 attempt + 3 retries (4 total)
-✅ maxretry = 3  →  3 total failed attempts
+❌ maxretry = 3  →  3 total failed attempts → ban
+✅ maxretry = 3  →  1 initial attempt + 3 retries = 4 total failures → ban
 ```
+
+> `maxretry` means **maximum retries allowed after the first attempt** — not total attempts.
 
 ### ⚠️ Log Entry Behavior (Important)
 
@@ -237,8 +247,3 @@ ignoreip = 127.0.0.1/8 YOUR_IP
 ```
 
 ---
-
-## Next Steps
-
-- [Phase 5: Real Domain Deployment](../phase-5-real-deployment/)
-- [Phase 6: HTTPS / SSL](../phase-6-https-ssl/)
