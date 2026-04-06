@@ -40,7 +40,11 @@ sudo ufw default deny incoming
 sudo ufw default allow outgoing
 ```
 
-> Block all incoming by default. Allow all outgoing. This is the safest starting point.
+**What this does:**
+- `deny incoming` — bans all outside connections by default. No port is accessible unless you explicitly allow it.
+- `allow outgoing` — server can freely make outbound connections (apt update, curl etc.)
+
+> This is called the **Whitelist approach** — instead of blocking bad things one by one, you block everything and only open what you need.
 
 ### Step 2 — Allow Required Ports
 
@@ -50,13 +54,20 @@ sudo ufw allow 80/tcp     # HTTP
 sudo ufw allow 443/tcp    # HTTPS (for future SSL)
 ```
 
+**Why these three:**
+- `2222` — without this, you cannot SSH into your own server after enabling the firewall
+- `80` — without this, no one can visit your website over HTTP
+- `443` — without this, HTTPS will not work after SSL setup
+
+All other ports — 22, 23, 25, 3306 etc. — are automatically blocked because of `default deny incoming`. No need to deny them one by one.
+
 ### Step 3 — Enable Firewall
 
 ```bash
 sudo ufw enable
 ```
 
-> ⚠️ Make sure SSH port is allowed before enabling — or you will get locked out.
+> ⚠️ Always allow SSH port **before** running this — otherwise you will be locked out of your own server with no way back in (except provider console).
 
 ### Step 4 — Verify Status
 
@@ -74,17 +85,19 @@ sudo ufw status verbose
 | 80/tcp | HTTP | Web server |
 | 443/tcp | HTTPS | SSL — not active yet |
 
-All other ports (22, 23, 25, 3306 etc.) are automatically blocked.
-
 ---
 
 ## Nmap Scan Behavior
 
-| Result | Meaning |
-|--------|---------|
-| Open | Port allowed + service is running |
-| Filtered | Port blocked by firewall |
-| Closed | Port allowed but no service listening |
+When you scan this server with Nmap, ports appear in three states:
+
+| Result | Meaning | Example |
+|--------|---------|---------|
+| Open | Port allowed + service is running | 2222, 80 |
+| Filtered | Port blocked by firewall | 22, 23 |
+| Closed | Port allowed but no service listening | 443 (before SSL) |
+
+> Filtered means UFW is actively blocking that port — attacker gets no response at all.
 
 ---
 
@@ -116,7 +129,15 @@ sudo ufw reset
 
 ## ☁️ Online VPS Extra Step
 
-UFW alone is not enough on cloud servers. Ports must also be opened from the provider's dashboard.
+On a cloud VPS, UFW alone is not enough. Cloud providers have their own **network-level firewall** (called Security Group or Firewall Rules) that sits in front of your server — before traffic even reaches UFW.
+
+So even if UFW allows port 80, the provider's firewall can still block it.
+
+```
+Internet → Provider Firewall → UFW → Server
+```
+
+Both layers must allow the port for it to work.
 
 | Provider | Where to open ports |
 |----------|-------------------|
