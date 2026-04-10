@@ -29,16 +29,16 @@
 
 ## 📂 Phases
 
-| Phase | Topic |
-|-------|-------|
-| [Phase 0](../phase-0-baseline/) | VPS Instance Setup + Ubuntu + Apache + SSH |
-| [Phase 1](../phase-1-ssh-hardening/) | SSH Hardening |
-| [Phase 2](../phase-2-firewall-ufw/) | UFW + Provider Security Group |
-| [Phase 3](../phase-3-server-basics/) | Server Basic Security |
-| [Phase 4](../phase-4-fail2ban/) | Fail2Ban (Brute-force Protection) |
-| [Phase 5](../phase-5-real-deployment/) | Real Domain Deployment |
-| [Phase 6](../phase-6-https-ssl/) | HTTPS / SSL (Certbot) |
-| [Phase 7](../phase-7-production-setup/) | Clean Production Setup |
+| Phase | Topic | Extra (VPS Only) |
+|-------|-------|------------------|
+| 0 | VPS Setup + Ubuntu + Apache + SSH | Create instance from provider dashboard, assign SSH key |
+| 1 | SSH Hardening | — |
+| 2 | UFW + Provider Firewall | Open ports from provider Security Group in addition to UFW |
+| 3 | Server Basic Security | — |
+| 4 | Fail2Ban (Brute-force Protection) | — |
+| 5 | Real Domain Deployment | Point domain DNS record to VPS public IP |
+| 6 | HTTPS / SSL (Certbot) | — |
+| 7 | Clean Production Setup | — |
 
 ---
 
