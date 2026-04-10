@@ -39,7 +39,7 @@ and fixes I found.
 
 ## 🗺️ Roadmap
 
-### 🖥️ Local VM (`local-vm/`)
+### 🖥️ Local VM (`Local-VM/`)
 
 | Phase | Topic |
 |-------|-------|
@@ -48,11 +48,11 @@ and fixes I found.
 | 2 | UFW Firewall |
 | 3 | Server Basic Security |
 | 4 | Fail2Ban (Brute-force Protection) |
-| 5 | Real Domain Deployment |
-| 6 | HTTPS / SSL (Certbot) |
-| 7 | Clean Production Setup |
+| 5 | Real Deployment (Cloudflare Tunnel) |
+| 6 | HTTPS / SSL — ⏭️ Continuing on Online VPS |
+| 7 | Clean Production Setup — ⏭️ Continuing on Online VPS |
 
-### ☁️ Online VPS (`online-vps/`)
+### ☁️ Online VPS (`Online-VPS/`)
 
 | Phase | Topic | Extra (VPS Only) |
 |-------|-------|------------------|
@@ -73,6 +73,7 @@ and fixes I found.
 ![Apache](https://img.shields.io/badge/Apache-HTTP_Server-D22128?style=flat&logo=apache&logoColor=white)
 ![OpenSSH](https://img.shields.io/badge/OpenSSH-Hardened-4A90D9?style=flat)
 ![UFW](https://img.shields.io/badge/UFW-Firewall-333?style=flat)
+![Cloudflare](https://img.shields.io/badge/Cloudflare-Tunnel-F38020?style=flat&logo=cloudflare&logoColor=white)
 ![Let's Encrypt](https://img.shields.io/badge/Let's_Encrypt-SSL-003A70?style=flat)
 
 ---
@@ -80,29 +81,29 @@ and fixes I found.
 ## 📂 Structure
 
 ```
-server-deployment-notes/
+Server_Deployment_Notes/
 │
-├── local-vm/                   ← Local Ubuntu VM (practice)
-│   ├── phase-0-baseline/
-│   ├── phase-1-ssh-hardening/
-│   ├── phase-2-firewall-ufw/
-│   ├── phase-3-server-basics/
-│   ├── phase-4-fail2ban/
-│   ├── phase-5-real-deployment/
-│   ├── phase-6-https-ssl/
-│   └── phase-7-production-setup/
+├── Local-VM/                   ← Local Ubuntu VM (practice)
+│   ├── Phase-0-Baseline/
+│   ├── Phase-1-SSH-Hardening/
+│   ├── Phase-2-Firewall-UFW/
+│   ├── Phase-3-Server-Basics/
+│   ├── Phase-4-Fail2Ban/
+│   ├── Phase-5-Real-Deployment/
+│   ├── Phase-6-HTTPS-SSL/
+│   └── Phase-7-Production-Setup/
 │
-├── online-vps/                 ← Online Cloud VPS (real deployment)
-│   ├── phase-0-baseline/
-│   ├── phase-1-ssh-hardening/
-│   ├── phase-2-firewall-ufw/
-│   ├── phase-3-server-basics/
-│   ├── phase-4-fail2ban/
-│   ├── phase-5-real-deployment/
-│   ├── phase-6-https-ssl/
-│   └── phase-7-production-setup/
+├── Online-VPS/                 ← Online Cloud VPS (real deployment)
+│   ├── Phase-0-Baseline/
+│   ├── Phase-1-SSH-Hardening/
+│   ├── Phase-2-Firewall-UFW/
+│   ├── Phase-3-Server-Basics/
+│   ├── Phase-4-Fail2Ban/
+│   ├── Phase-5-Real-Deployment/
+│   ├── Phase-6-HTTPS-SSL/
+│   └── Phase-7-Production-Setup/
 │
-└── cheatsheets/
+└── Cheatsheets/
     ├── linux-commands.md
     ├── ufw-commands.md
     └── ssh-commands.md
