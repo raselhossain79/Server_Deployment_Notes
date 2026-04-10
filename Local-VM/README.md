@@ -20,14 +20,14 @@
 
 | Phase | Topic |
 |-------|-------|
-| [Phase 0](../phase-0-baseline/) | Baseline Setup (Ubuntu + Apache + SSH) |
-| [Phase 1](../phase-1-ssh-hardening/) | SSH Hardening |
-| [Phase 2](../phase-2-firewall-ufw/) | UFW Firewall |
-| [Phase 3](../phase-3-server-basics/) | Server Basic Security |
-| [Phase 4](../phase-4-fail2ban/) | Fail2Ban (Brute-force Protection) |
-| [Phase 5](../phase-5-real-deployment/) | Real Domain Deployment |
-| [Phase 6](../phase-6-https-ssl/) | HTTPS / SSL (Certbot) |
-| [Phase 7](../phase-7-production-setup/) | Clean Production Setup |
+| 0 | Baseline Setup (Ubuntu + Apache + SSH) |
+| 1 | SSH Hardening |
+| 2 | UFW Firewall |
+| 3 | Server Basic Security |
+| 4 | Fail2Ban (Brute-force Protection) |
+| 5 | Real Deployment (Cloudflare Tunnel) |
+| 6 | HTTPS / SSL — ⏭️ Continuing on Online VPS |
+| 7 | Clean Production Setup — ⏭️ Continuing on Online VPS |
 
 ---
 
