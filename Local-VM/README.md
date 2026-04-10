@@ -1,4 +1,4 @@
-# 🖥️ Local VM — Server Setup & Hardening
+# 🖥️ Local-VM — Server Setup & Hardening
 
 > Hands-on practice environment running Ubuntu Server on a local virtual machine.
 > All phases are practiced here first before replicating on a live VPS.
