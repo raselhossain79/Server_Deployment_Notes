@@ -87,7 +87,7 @@ Server_Deployment_Notes/
 │   ├── Phase-0-Baseline/
 │   ├── Phase-1-SSH-Hardening/
 │   ├── Phase-2-Firewall-UFW/
-│   ├── Phase-3-Server-Basics/
+│   ├── Phase-3-Server-Basic-Security/
 │   ├── Phase-4-Fail2Ban/
 │   ├── Phase-5-Real-Deployment/
 │   ├── Phase-6-HTTPS-SSL/
@@ -97,7 +97,7 @@ Server_Deployment_Notes/
 │   ├── Phase-0-Baseline/
 │   ├── Phase-1-SSH-Hardening/
 │   ├── Phase-2-Firewall-UFW/
-│   ├── Phase-3-Server-Basics/
+│   ├── Phase-3-Server-Basic-Security/
 │   ├── Phase-4-Fail2Ban/
 │   ├── Phase-5-Real-Deployment/
 │   ├── Phase-6-HTTPS-SSL/
