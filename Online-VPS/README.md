@@ -57,7 +57,7 @@
 
 # ☁️ Online VPS — Full Roadmap
 
-## Platform: Oracle Cloud Free Tier
+## Platform: Oracle Cloud Free Tier | Web Server: Nginx
 
 ---
 
@@ -78,7 +78,7 @@
 ### Step 3 — Configure Security Group (VCN)
 - Go to VCN → Security List → Ingress Rules
 - Open ports: 22 (temporary), 80, 443
-- This is extra step compared to Local VM
+- This is an extra step compared to Local VM
 
 ### Step 4 — Connect via SSH
 ```bash
@@ -90,26 +90,45 @@ ssh -i ~/.ssh/id_ed25519 ubuntu@<public-ip>
 sudo apt update && sudo apt upgrade -y
 ```
 
-### Step 6 — Install Apache
+### Step 6 — Install Nginx
 ```bash
-sudo apt install apache2 -y
+sudo apt install nginx -y
 ```
 
+Verify Nginx:
+```bash
+sudo systemctl status nginx
+```
+
+Test locally:
+```bash
+curl http://localhost
+```
+
+> ✅ Should return Nginx default welcome page.
+
 ### Step 7 — Deploy HTML + Test
-- Upload HTML via SCP
-- Test: `http://<public-ip>`
+```bash
+sudo nano /var/www/html/index.html
+```
+
+Test in browser: `http://<public-ip>`
 
 ---
 
 ## 🔐 PHASE 1: SSH Hardening
 > Same as Local VM — no differences
 
-- Generate/reuse SSH key
+- Reuse same SSH key from Kali
 - Disable password authentication
 - Disable root login
 - Change SSH port (e.g., 2222)
-- ⚠️ Update Oracle Security Group for new SSH port
-- Restart SSH + test
+- ⚠️ Update Oracle Security Group — add port 2222, remove port 22
+- Restart SSH + test new port
+
+```bash
+ssh -i ~/.ssh/id_ed25519 ubuntu@<public-ip> -p 2222
+```
 
 ---
 
@@ -124,12 +143,18 @@ sudo ufw allow 2222/tcp
 sudo ufw allow 80/tcp
 sudo ufw allow 443/tcp
 sudo ufw enable
+sudo ufw status verbose
 ```
 
-**Oracle Security Group (extra):**
-- Remove old port 22 rule
+**Oracle Security Group (extra — must do):**
+- Remove port 22 rule
 - Add port 2222, 80, 443 in Ingress Rules
-- Both layers must match — otherwise ports won't work
+
+> ⚠️ Both UFW and Oracle Security Group must allow the port — if either blocks it, the port will not work.
+
+```
+Internet → Oracle Security Group → UFW → Server
+```
 
 ---
 
@@ -151,70 +176,86 @@ sudo ufw enable
 
 - Install + enable
 - Configure SSH jail (port 2222)
-- Test + verify
+- Test + verify ban behavior
 
 ---
 
 ## 🌍 PHASE 5: Real Domain Deployment
-> Different from Local VM — real domain needed here
+> Different from Local VM — real domain needed
 
 ### Step 1 — Buy a Domain
 - Namecheap, GoDaddy, or Cloudflare Registrar
-- Cheap options: `.xyz`, `.online`, `.me`
+- Cheap options: `.xyz`, `.online`, `.me` (1-2 USD/year)
 
 ### Step 2 — Point Domain to VPS IP
-- Go to domain DNS settings
-- Add A Record:
-  - Name: `@` (root domain)
-  - Value: VPS public IP
-  - TTL: Auto
-- Add A Record for www:
-  - Name: `www`
-  - Value: VPS public IP
+In domain DNS settings, add:
 
-### Step 3 — Configure Apache Virtual Host
-```bash
-sudo nano /etc/apache2/sites-available/yourdomain.conf
-```
+| Type | Name | Value |
+|------|------|-------|
+| A | @ | VPS public IP |
+| A | www | VPS public IP |
 
-```apache
-<VirtualHost *:80>
-    ServerName yourdomain.com
-    ServerAlias www.yourdomain.com
-    DocumentRoot /var/www/html
-</VirtualHost>
-```
+DNS propagation takes 5-30 minutes.
+
+### Step 3 — Configure Nginx Server Block
+> Nginx uses "server blocks" — equivalent to Apache's virtual hosts
 
 ```bash
-sudo a2ensite yourdomain.conf
-sudo systemctl restart apache2
+sudo nano /etc/nginx/sites-available/yourdomain.conf
+```
+
+```nginx
+server {
+    listen 80;
+    server_name yourdomain.com www.yourdomain.com;
+    root /var/www/html;
+    index index.html;
+
+    location / {
+        try_files $uri $uri/ =404;
+    }
+}
+```
+
+Enable the site:
+```bash
+sudo ln -s /etc/nginx/sites-available/yourdomain.conf /etc/nginx/sites-enabled/
+sudo nginx -t        # test config for errors
+sudo systemctl restart nginx
 ```
 
 ### Step 4 — Test
-- Open browser: `http://yourdomain.com`
-- Site should load ✅
+- Open browser: `http://yourdomain.com` ✅
 
 ---
 
-## 🔒 PHASE 6: HTTPS / SSL (Certbot)
-> Only possible on Online VPS — not on Local VM
+## 🔒 PHASE 6: HTTPS / SSL (Certbot + Nginx)
+> Only possible on Online VPS — requires real domain
 
 ### Step 1 — Install Certbot
 ```bash
-sudo apt install certbot python3-certbot-apache -y
+sudo apt install certbot python3-certbot-nginx -y
 ```
+
+> Note: For Nginx use `python3-certbot-nginx` — not `python3-certbot-apache`
 
 ### Step 2 — Generate SSL Certificate
 ```bash
-sudo certbot --apache -d yourdomain.com -d www.yourdomain.com
+sudo certbot --nginx -d yourdomain.com -d www.yourdomain.com
 ```
 
-### Step 3 — Auto Renewal Setup
+Certbot will:
+- Verify domain ownership
+- Generate SSL certificate
+- Automatically update Nginx config for HTTPS
+- Redirect HTTP → HTTPS automatically
+
+### Step 3 — Auto Renewal
 ```bash
 sudo certbot renew --dry-run
 ```
 
-Certbot automatically adds a cron job for renewal every 90 days.
+Certbot adds a cron job automatically — certificate renews every 90 days.
 
 ### Step 4 — Test
 - Open browser: `https://yourdomain.com`
@@ -223,7 +264,6 @@ Certbot automatically adds a cron job for renewal every 90 days.
 ---
 
 ## ⚙️ PHASE 7: Clean Production Setup
-> Final polish — professional level
 
 ### Step 1 — Proper Folder Permission
 ```bash
@@ -231,36 +271,43 @@ sudo chown -R www-data:www-data /var/www/html
 sudo chmod -R 755 /var/www/html
 ```
 
-### Step 2 — Disable Apache Default Site
+### Step 2 — Remove Nginx Default Site
 ```bash
-sudo a2dissite 000-default.conf
-sudo systemctl restart apache2
+sudo rm /etc/nginx/sites-enabled/default
+sudo systemctl restart nginx
 ```
 
-### Step 3 — Security Headers (Apache)
+### Step 3 — Nginx Security Headers
 ```bash
-sudo nano /etc/apache2/conf-available/security.conf
+sudo nano /etc/nginx/nginx.conf
 ```
 
-Add:
+Add inside `http {}` block:
+```nginx
+server_tokens off;           # hide Nginx version
+add_header X-Frame-Options "SAMEORIGIN";
+add_header X-Content-Type-Options "nosniff";
+add_header X-XSS-Protection "1; mode=block";
 ```
-ServerTokens Prod
-ServerSignature Off
+
+Test and restart:
+```bash
+sudo nginx -t
+sudo systemctl restart nginx
 ```
 
 ### Step 4 — Backup System
 ```bash
-# Backup web directory
 rsync -av /var/www/html/ /backup/html/
 ```
 
-### Step 5 — Final Check
+### Step 5 — Final Verification
 ```bash
-# Check all services running
-sudo systemctl status apache2
+sudo systemctl status nginx
 sudo systemctl status fail2ban
 sudo ufw status verbose
 sudo fail2ban-client status sshd
+sudo certbot certificates
 ```
 
 ---
@@ -270,23 +317,26 @@ sudo fail2ban-client status sshd
 | Item | Status |
 |------|--------|
 | Ubuntu VPS live | ✅ |
+| Nginx web server | ✅ |
 | SSH hardened | ✅ |
-| Firewall active (UFW + Oracle) | ✅ |
+| UFW + Oracle Security Group | ✅ |
 | Server hardened | ✅ |
 | Fail2Ban active | ✅ |
 | Real domain connected | ✅ |
 | HTTPS / SSL active | ✅ |
+| Security headers set | ✅ |
 | Production ready | ✅ |
 
 ---
 
-## 🔑 Key Differences: Local VM vs Online VPS
+## 🔑 Apache vs Nginx — Key Differences You Will Notice
 
-| Step | Local VM | Online VPS |
-|------|----------|------------|
-| OS Install | VMware ISO | Oracle dashboard one-click |
-| SSH Key | Generated on Kali | Same key, assigned during instance creation |
-| Public Access | Cloudflare Tunnel | Direct via public IP |
-| Firewall | UFW only | UFW + Oracle Security Group |
-| SSL | Not possible | Certbot + Let's Encrypt |
-| Domain | Not needed | Required for SSL |
+| Item | Apache (Local VM) | Nginx (Online VPS) |
+|------|------------------|-------------------|
+| Config folder | `/etc/apache2/` | `/etc/nginx/` |
+| Site config | `sites-available/` + `a2ensite` | `sites-available/` + symlink |
+| Virtual host | `<VirtualHost>` block | `server {}` block |
+| Config test | `apache2ctl configtest` | `nginx -t` |
+| Certbot plugin | `python3-certbot-apache` | `python3-certbot-nginx` |
+| Default web root | `/var/www/html/` | `/var/www/html/` |
+| Restart | `systemctl restart apache2` | `systemctl restart nginx` |
