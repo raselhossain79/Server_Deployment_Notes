@@ -75,4 +75,3 @@ The Phase 5 deployment was used to temporarily expose a personal portfolio site 
 
 ---
 
-> 💡 *Complete all phases here first — then move to Online VPS.*
