@@ -36,7 +36,7 @@
 ### Phase 0 — Baseline Setup & Phase 2 — UFW Firewall
 
 
-![Apache & UFW Status](images/apache-ufw-status.png)
+![Apache & UFW Status](images/apache-ufw-status.jpg)
 
 
 *(Image 7 — Apache service status + UFW verbose rules)*
@@ -44,7 +44,7 @@
 ### Phase 5 — Real Deployment (Cloudflare Tunnel)
 
 
-![Cloudflare Tunnel Connected](images/cloudflare-tunnel.png)
+![Cloudflare Tunnel Connected](images/cloudflare-tunnel.jpg)
 
 
 *(Image 2 — Quick tunnel created and connected)*
@@ -57,21 +57,21 @@ The Phase 5 deployment was used to temporarily expose a personal portfolio site 
 
 
 
-![Portfolio — Hero Section](images/portfolio-hero.png)
+![Portfolio — Hero Section](images/portfolio-hero.jpg)
 
 
 *(Image 4)*
 
 
 
-![Portfolio — Skills Section](images/portfolio-skills.png)
+![Portfolio — Skills Section](images/portfolio-skills.jpg)
 
 
 *(Image 5)*
 
 
 
-![Portfolio — Projects Section](images/portfolio-projects.png)
+![Portfolio — Projects Section](images/portfolio-projects.jpg)
 
 
 *(Image 6)*
