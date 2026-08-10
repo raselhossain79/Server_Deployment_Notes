@@ -31,5 +31,51 @@
 
 ---
 
-> 💡 *Complete all phases here first — then move to Online VPS.*
+## 📸 Screenshots
 
+### Phase 0 — Baseline Setup & Phase 2 — UFW Firewall
+
+
+![Apache & UFW Status](images/apache-ufw-status.png)
+
+
+*(Image 7 — Apache service status + UFW verbose rules)*
+
+### Phase 5 — Real Deployment (Cloudflare Tunnel)
+
+
+![Cloudflare Tunnel Connected](images/cloudflare-tunnel.png)
+
+
+*(Image 2 — Quick tunnel created and connected)*
+
+---
+
+## 🌐 Live Deployment Showcase
+
+The Phase 5 deployment was used to temporarily expose a personal portfolio site through the Cloudflare Tunnel, demonstrating end-to-end reachability from local VM to public internet.
+
+
+
+![Portfolio — Hero Section](images/portfolio-hero.png)
+
+
+*(Image 4)*
+
+
+
+![Portfolio — Skills Section](images/portfolio-skills.png)
+
+
+*(Image 5)*
+
+
+
+![Portfolio — Projects Section](images/portfolio-projects.png)
+
+
+*(Image 6)*
+
+---
+
+> 💡 *Complete all phases here first — then move to Online VPS.*
