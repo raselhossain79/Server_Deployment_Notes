@@ -94,19 +94,14 @@ Server_Deployment_Notes/
 │   └── Phase-7-Production-Setup/
 │
 ├── Online-VPS/                 ← Online Cloud VPS (real deployment)
-│   ├── Phase-0-Baseline/
-│   ├── Phase-1-SSH-Hardening/
-│   ├── Phase-2-Firewall-UFW/
-│   ├── Phase-3-Server-Basic-Security/
-│   ├── Phase-4-Fail2Ban/
-│   ├── Phase-5-Real-Deployment/
-│   ├── Phase-6-HTTPS-SSL/
-│   └── Phase-7-Production-Setup/
-│
-└── Cheatsheets/
-    ├── linux-commands.md
-    ├── ufw-commands.md
-    └── ssh-commands.md
+    ├── Phase-0-Baseline/
+    ├── Phase-1-SSH-Hardening/
+    ├── Phase-2-Firewall-UFW/
+    ├── Phase-3-Server-Basic-Security/
+    ├── Phase-4-Fail2Ban/
+    ├── Phase-5-Real-Deployment/
+    ├── Phase-6-HTTPS-SSL/
+    └── Phase-7-Production-Setup/
 ```
 
 ---
